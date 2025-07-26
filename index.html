@@ -34,6 +34,7 @@
           <option value="EUR">🇪🇺 EUR</option>
         </select>
       </div>
+      
 
       <button onclick="convertCurrency()" class="btn" data-aos="zoom-in-up" data-aos-delay="800">Convert</button>
 
@@ -48,3 +49,27 @@
   <script src="script.js"></script>
 </body>
 </html>
+<a href="https://github.com/Aritreya1/currency-converter-website/raw/main/app/app-release.apk" download id="download-apk-btn">
+  📱 Get The App
+</a>
+
+<style>
+  #download-apk-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px; /* ← changed from right to left */
+    background-color: #00d3b08f;
+    color: white;
+    padding: 7px 8px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+  }
+
+  #download-apk-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
