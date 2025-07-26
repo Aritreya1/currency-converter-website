@@ -1,0 +1,169 @@
+/* 🌄 Parallax Background */
+.parallax-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  opacity: 0.4;
+}
+
+/* 🌙 Dark Mode Toggle */
+#darkModeToggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#darkModeToggle:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: #000;
+}
+
+/* ✅ Body setup - FIXED */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: transparent;
+}
+
+/* ✅ Main container - centered */
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  padding: 20px;
+}
+
+/* ✅ Converter Box */
+.converter {
+  width: 90%;
+  max-width: 400px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  opacity: 1; /* ✅ Remove animation visibility issue */
+  transform: none;
+  animation: none; /* Disable slideIn for now */
+}
+
+.converter h1 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.select-group {
+  display: flex;
+  gap: 10px;
+}
+
+button.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+button.btn:hover {
+  background: #ff4b4b;
+  transform: scale(1.05);
+}
+
+button.btn:active {
+  transform: scale(0.95);
+}
+
+#result {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#result.show {
+  opacity: 1;
+}
+
+/* 🌑 DARK MODE */
+body.dark {
+  background: linear-gradient(135deg, #111, #222);
+}
+
+body.dark .converter {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+body.dark input,
+body.dark select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+body.dark input:focus,
+body.dark select:focus {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+body.dark #result {
+  color: #fff;
+}
+
+body.dark button.btn {
+  background: #888;
+}
+
+body.dark button.btn:hover {
+  background: #aaa;
+}

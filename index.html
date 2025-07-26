@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+  <!-- 🌙 Dark Mode Toggle -->
+  <button id="darkModeToggle" onclick="toggleDarkMode()">🌓</button>
+
+  <!-- 🌄 Parallax Background -->
+  <div class="parallax-bg"></div>
+
+  <!-- 🌐 Main Content -->
+  <div class="container">
+    <div class="converter animated" data-aos="fade-up" data-aos-duration="1000">
+      <h1 data-aos="zoom-in" data-aos-duration="800">💱 Currency Converter</h1>
+
+      <input type="number" id="amount" placeholder="Enter amount" data-aos="fade-right" data-aos-delay="200" />
+
+      <div class="select-group">
+        <select id="fromCurrency" data-aos="fade-left" data-aos-delay="400">
+          <option value="USD">🇺🇸 USD</option>
+          <option value="INR">🇮🇳 INR</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+
+        <select id="toCurrency" data-aos="fade-right" data-aos-delay="600">
+          <option value="INR">🇮🇳 INR</option>
+          <option value="USD">🇺🇸 USD</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+      </div>
+
+      <button onclick="convertCurrency()" class="btn" data-aos="zoom-in-up" data-aos-delay="800">Convert</button>
+
+      <div id="result" data-aos="fade-up" data-aos-delay="1000"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
