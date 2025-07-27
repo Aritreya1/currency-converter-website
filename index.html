@@ -3,38 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Currency Converter App</title>
+  <title>Currency Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    .floating-btn-container {
+    #download-apk-btn, .website-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 999;
-    }
-
-    .floating-btn {
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 14px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      top: 20px;
+      left: 20px;
+      background-color: #00d3b08f;
+      color: white;
+      padding: 7px 8px;
       text-decoration: none;
-      text-align: center;
+      font-weight: bold;
+      border-radius: 5px;
+      z-index: 500;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease;
+      display: none; /* Hidden by default */
     }
 
-    .toast {
+    #download-apk-btn:hover,
+    .website-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Toast Styling */
+    #toast {
       visibility: hidden;
       min-width: 200px;
       background-color: #333;
@@ -43,60 +38,153 @@
       border-radius: 5px;
       padding: 12px;
       position: fixed;
-      z-index: 9999;
+      bottom: 30px;
       left: 50%;
-      bottom: 60px;
       transform: translateX(-50%);
-      font-size: 14px;
-      opacity: 0;
-      transition: visibility 0s, opacity 0.3s ease-in-out;
+      z-index: 999;
+      font-size: 15px;
     }
 
-    .toast.show {
+    #toast.show {
       visibility: visible;
-      opacity: 1;
+      animation: fadein 0.3s, fadeout 0.5s 1.8s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 20px; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 20px; opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating Button Container -->
-  <div class="floating-btn-container" id="button-container">
-    <a
-      href="https://github.com/arindam-currency/ConverterAndroid/releases/download/v1.0/app-release.apk"
-      class="floating-btn"
-      id="download-btn"
-    >
-      📱 Get The App
-    </a>
+  <!-- 🌙 Dark Mode Toggle -->
+  <button id="darkModeToggle" onclick="toggleDarkMode()">🌓</button>
+
+  <!-- 🌄 Parallax Background -->
+  <div class="parallax-bg"></div>
+
+  <!-- 🌐 Main Content -->
+  <div class="container">
+    <div class="converter animated" data-aos="fade-up" data-aos-duration="1000">
+      <h1 data-aos="zoom-in" data-aos-duration="800">💱 Currency Converter</h1>
+
+      <input type="number" id="amount" placeholder="Enter amount" data-aos="fade-right" data-aos-delay="200" />
+
+      <div class="select-group">
+        <select id="fromCurrency" data-aos="fade-left" data-aos-delay="400">
+          <option value="USD">🇺🇸 USD</option>
+          <option value="INR">🇮🇳 INR</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+
+        <select id="toCurrency" data-aos="fade-right" data-aos-delay="600">
+          <option value="INR">🇮🇳 INR</option>
+          <option value="USD">🇺🇸 USD</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+      </div>
+
+      <button onclick="convertCurrency()" class="btn" data-aos="zoom-in-up" data-aos-delay="800">Convert</button>
+      <div id="result" data-aos="fade-up" data-aos-delay="1000"></div>
+    </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast"></div>
+  <!-- Toast Message -->
+  <div id="toast">Opening in Chrome...</div>
 
+  <!-- Buttons -->
+  <a href="https://github.com/Aritreya1/currency-converter-website/releases/download/v1.0/Currency4u.apk" download id="download-apk-btn">
+    📱 Get The App
+  </a>
+
+  <a href="#" class="website-btn" id="website-btn" onclick="redirectToChrome(event)">
+    🌐 Go to Full Website
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
   <script>
+    AOS.init();
+
+    function isRunningInApp() {
+      return (typeof Android !== "undefined") || navigator.userAgent.includes("wv");
+    }
+
     function showToast(message) {
       const toast = document.getElementById("toast");
       toast.textContent = message;
-      toast.className = "toast show";
+      toast.className = "show";
       setTimeout(() => {
-        toast.className = "toast";
-      }, 2500);
+        toast.className = toast.className.replace("show", "");
+      }, 2000);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      const isAndroidApp = /Currency4u\/[0-9.]+/.test(userAgent);
+    function redirectToChrome(event) {
+      event.preventDefault();
+      showToast("Opening in Chrome...");
 
-      const downloadBtn = document.getElementById("download-btn");
+      setTimeout(() => {
+        window.location.href = "https://appcurrencyconverter4u.netlify.app#Intent;scheme=https;package=com.android.chrome;end;";
+      }, 1300);
+    }
 
-      if (isAndroidApp) {
-        // Hide download button inside the app
+    window.addEventListener("DOMContentLoaded", () => {
+      const downloadBtn = document.getElementById("download-apk-btn");
+      const websiteBtn = document.getElementById("website-btn");
+
+      if (isRunningInApp()) {
+        websiteBtn.style.display = "inline-block";
         downloadBtn.style.display = "none";
       } else {
-        // Show download button in browser
         downloadBtn.style.display = "inline-block";
+        websiteBtn.style.display = "none";
       }
     });
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const from = document.getElementById("fromCurrency").value;
+      const to = document.getElementById("toCurrency").value;
+      const resultBox = document.getElementById("result");
+
+      resultBox.classList.remove("show");
+
+      if (isNaN(amount) || amount <= 0) {
+        resultBox.textContent = "Please enter a valid amount.";
+        resultBox.classList.add("show");
+        return;
+      }
+
+      fetch(`https://v6.exchangerate-api.com/v6/067bccc8df472c61dc77257c/latest/${from}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.result === "success") {
+            const rate = data.conversion_rates[to];
+            const converted = (amount * rate).toFixed(2);
+            setTimeout(() => {
+              resultBox.textContent = `${amount} ${from} = ${converted} ${to}`;
+              resultBox.classList.add("show");
+            }, 100);
+          } else {
+            resultBox.textContent = "Failed to fetch rates.";
+            resultBox.classList.add("show");
+          }
+        })
+        .catch(() => {
+          resultBox.textContent = "Error connecting to API.";
+          resultBox.classList.add("show");
+        });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
   </script>
 </body>
 </html>
