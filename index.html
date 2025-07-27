@@ -6,17 +6,29 @@
   <title>Currency Converter</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    #download-apk-btn, .website-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #00d3b08f;
+      color: white;
+      padding: 7px 8px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      z-index: 500;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease;
+      display: none; /* Hidden by default */
+    }
+
+    #download-apk-btn:hover,
+    .website-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
-<script>
-  function isInAndroidApp() {
-    return navigator.userAgent.includes("Android") && window.AndroidInterface;
-  }
-
-  if (isInAndroidApp()) {
-    document.getElementById("websiteButton").style.display = "inline-block";
-  }
-</script>
-
 <body>
   <!-- 🌙 Dark Mode Toggle -->
   <button id="darkModeToggle" onclick="toggleDarkMode()">🌓</button>
@@ -44,45 +56,45 @@
           <option value="EUR">🇪🇺 EUR</option>
         </select>
       </div>
-      
 
       <button onclick="convertCurrency()" class="btn" data-aos="zoom-in-up" data-aos-delay="800">Convert</button>
-
       <div id="result" data-aos="fade-up" data-aos-delay="1000"></div>
     </div>
   </div>
 
+  <!-- Buttons -->
+  <a href="https://github.com/Aritreya1/currency-converter-website/releases/download/v1.0/Currency4u.apk" download id="download-apk-btn">
+    📱 Get The App
+  </a>
+
+  <a href="https://appcurrencyconverter4u.netlify.app" class="website-btn" id="website-btn">
+    🌐 Go to Full Website
+  </a>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
   <script>
     AOS.init();
+
+    function isRunningInApp() {
+      return (typeof Android !== "undefined") || navigator.userAgent.includes("wv");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const downloadBtn = document.getElementById("download-apk-btn");
+      const websiteBtn = document.getElementById("website-btn");
+
+      if (isRunningInApp()) {
+        // Inside the app
+        websiteBtn.style.display = "inline-block";
+        downloadBtn.style.display = "none";
+      } else {
+        // On browser
+        downloadBtn.style.display = "inline-block";
+        websiteBtn.style.display = "none";
+      }
+    });
   </script>
-  <script src="script.js"></script>
 </body>
 </html>
-<a href="https://github.com/Aritreya1/currency-converter-website/releases/download/v1.0/Currency4u.apk" download id="download-apk-btn">
-  📱 Get The App
-</a>
-
-<style>
-  #download-apk-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px; /* ← changed from right to left */
-    background-color: #00d3b08f;
-    color: white;
-    padding: 7px 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    z-index: 500;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease;
-  }
-
-  #download-apk-btn:hover {
-    background-color: #0056b3;
-  }
-</style>
-<a href="https://appcurrencyconverter4u.netlify.app" class="website-btn" id="websiteButton">
-  🌐 Go to Full Website
-</a>
