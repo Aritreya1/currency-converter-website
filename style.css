@@ -167,3 +167,19 @@ body.dark button.btn {
 body.dark button.btn:hover {
   background: #aaa;
 }
+.website-btn {
+  display: none; /* Hidden by default */
+  background-color: #2a9d8f;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 20px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.website-btn:hover {
+  background-color: #21867a;
+}

@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
+<script>
+  function isInAndroidApp() {
+    return navigator.userAgent.includes("Android") && window.AndroidInterface;
+  }
+
+  if (isInAndroidApp()) {
+    document.getElementById("websiteButton").style.display = "inline-block";
+  }
+</script>
+
 <body>
   <!-- 🌙 Dark Mode Toggle -->
   <button id="darkModeToggle" onclick="toggleDarkMode()">🌓</button>
@@ -73,3 +83,6 @@
     background-color: #0056b3;
   }
 </style>
+<a href="https://appcurrencyconverter4u.netlify.app" class="website-btn" id="websiteButton">
+  🌐 Go to Full Website
+</a>
