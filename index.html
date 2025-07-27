@@ -27,6 +27,38 @@
     .website-btn:hover {
       background-color: #0056b3;
     }
+
+    /* Toast Styling */
+    #toast {
+      visibility: hidden;
+      min-width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 12px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      font-size: 15px;
+    }
+
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.3s, fadeout 0.5s 1.8s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 20px; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 20px; opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -62,12 +94,15 @@
     </div>
   </div>
 
+  <!-- Toast Message -->
+  <div id="toast">Opening in Chrome...</div>
+
   <!-- Buttons -->
   <a href="https://github.com/Aritreya1/currency-converter-website/releases/download/v1.0/Currency4u.apk" download id="download-apk-btn">
     📱 Get The App
   </a>
 
-  <a href="https://appcurrencyconverter4u.netlify.app" class="website-btn" id="website-btn">
+  <a href="#" class="website-btn" id="website-btn" onclick="redirectToChrome(event)">
     🌐 Go to Full Website
   </a>
 
@@ -81,20 +116,75 @@
       return (typeof Android !== "undefined") || navigator.userAgent.includes("wv");
     }
 
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "show";
+      setTimeout(() => {
+        toast.className = toast.className.replace("show", "");
+      }, 2000);
+    }
+
+    function redirectToChrome(event) {
+      event.preventDefault();
+      showToast("Opening in Chrome...");
+
+      setTimeout(() => {
+        window.location.href = "intent://appcurrencyconverter4u.netlify.app#Intent;scheme=https;package=com.android.chrome;end;";
+      }, 1300);
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       const downloadBtn = document.getElementById("download-apk-btn");
       const websiteBtn = document.getElementById("website-btn");
 
       if (isRunningInApp()) {
-        // Inside the app
         websiteBtn.style.display = "inline-block";
         downloadBtn.style.display = "none";
       } else {
-        // On browser
         downloadBtn.style.display = "inline-block";
         websiteBtn.style.display = "none";
       }
     });
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const from = document.getElementById("fromCurrency").value;
+      const to = document.getElementById("toCurrency").value;
+      const resultBox = document.getElementById("result");
+
+      resultBox.classList.remove("show");
+
+      if (isNaN(amount) || amount <= 0) {
+        resultBox.textContent = "Please enter a valid amount.";
+        resultBox.classList.add("show");
+        return;
+      }
+
+      fetch(`https://v6.exchangerate-api.com/v6/067bccc8df472c61dc77257c/latest/${from}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.result === "success") {
+            const rate = data.conversion_rates[to];
+            const converted = (amount * rate).toFixed(2);
+            setTimeout(() => {
+              resultBox.textContent = `${amount} ${from} = ${converted} ${to}`;
+              resultBox.classList.add("show");
+            }, 100);
+          } else {
+            resultBox.textContent = "Failed to fetch rates.";
+            resultBox.classList.add("show");
+          }
+        })
+        .catch(() => {
+          resultBox.textContent = "Error connecting to API.";
+          resultBox.classList.add("show");
+        });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
   </script>
 </body>
 </html>
