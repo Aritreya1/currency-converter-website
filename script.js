@@ -1,6 +1,33 @@
+// 👇 New function to handle inputs like "2 lakh", "1.5 million", etc.
+function parseHumanReadableAmount(input) {
+    const units = {
+        lakh: 1e5,
+        crore: 1e7,
+        million: 1e6,
+        billion: 1e9,
+        thousand: 1e3,
+    };
+
+    input = input.toLowerCase().trim().replace(/\s+/g, ""); // normalize spaces and lowercase
+
+    for (const unit in units) {
+        const regex = new RegExp(`(\\d+(\\.\\d+)?)${unit}s?`, 'i'); // match "2.5lakhs", "3million", etc.
+        const match = input.match(regex);
+        if (match) {
+            const number = parseFloat(match[1]);
+            return number * units[unit];
+        }
+    }
+
+    // Fallback if no keyword detected
+    const fallback = parseFloat(input.replace(/,/g, ""));
+    return isNaN(fallback) ? 0 : fallback;
+}
+
 // Function to fetch and convert currency
 const convertCurrency = async () => {
-    const amount = parseFloat(document.getElementById("amount").value);
+    const userInput = document.getElementById("amount").value;
+    const amount = parseHumanReadableAmount(userInput); // 👈 Updated line
     const from = document.getElementById("fromCurrency").value;
     const to = document.getElementById("toCurrency").value;
     const resultBox = document.getElementById("result");
@@ -22,7 +49,7 @@ const convertCurrency = async () => {
         if (data.result === "success") {
             const rate = data.conversion_rates[to];
             const converted = (amount * rate).toFixed(2);
-            resultBox.textContent = `${amount} ${from} = ${converted} ${to}`;
+            resultBox.textContent = `${amount.toLocaleString()} ${from} = ${converted} ${to}`;
         } else {
             resultBox.textContent = "Failed to fetch rates. Please try again.";
         }
